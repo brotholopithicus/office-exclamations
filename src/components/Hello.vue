@@ -1,21 +1,37 @@
 <template>
 <div class="container">
-  <div class="keys">
-    <div class="key" v-for="(sound, index) in sounds" :data-key="sound.keyCode" @click="() => playSound({ keyCode: sound.keyCode})" @transitionend="removeTransition" :class="{ playing: sound.playing}">
-      <kbd>{{sound.key.toUpperCase()}}</kbd>
-      <span class="sound">{{names[index]}}</span>
-      <audio :data-key="sound.keyCode" :src="sound.file"></audio>
+  <div class="keyboard">
+    <div class="keys qwerty">
+      <div class="key" v-for="(sound, index) in qwerty" :data-key="sound.keyCode" @click="() => playSound({ keyCode: sound.keyCode})" @transitionend="removeTransition" :class="{ playing: sound.playing}">
+        <kbd>{{sound.key.toUpperCase()}}</kbd>
+        <span class="sound">{{names[index]}}</span>
+        <audio :data-key="sound.keyCode" :src="sound.file"></audio>
+      </div>
+    </div>
+    <div class="keys asdfg">
+      <div class="key" v-for="(sound, index) in asdfg" :data-key="sound.keyCode" @click="() => playSound({ keyCode: sound.keyCode})" @transitionend="removeTransition" :class="{ playing: sound.playing}">
+        <kbd>{{sound.key.toUpperCase()}}</kbd>
+        <span class="sound">{{names[index + 10]}}</span>
+        <audio :data-key="sound.keyCode" :src="sound.file"></audio>
+      </div>
+    </div>
+    <div class="keys zxcvb">
+      <div class="key" v-for="(sound, index) in zxcvb" :data-key="sound.keyCode" @click="() => playSound({ keyCode: sound.keyCode})" @transitionend="removeTransition" :class="{ playing: sound.playing}">
+        <kbd>{{sound.key.toUpperCase()}}</kbd>
+        <span class="sound">{{names[index + 19]}}</span>
+        <audio :data-key="sound.keyCode" :src="sound.file"></audio>
+      </div>
     </div>
   </div>
 </div>
 </template>
 
 <script>
-const allFiles = (ctx => ctx.keys().map(ctx))(require.context('../assets/sounds'));
-
 import {
   keys
 } from '../utils';
+
+const allFiles = (ctx => ctx.keys().map(ctx))(require.context('../assets/sounds'));
 
 const sounds = Object.keys(keys)
   .slice(0, allFiles.length)
@@ -26,7 +42,7 @@ const sounds = Object.keys(keys)
       file: allFiles[index],
       playing: false
     }
-  });
+  }).slice(0, 26)
 
 export default {
   name: 'hello',
@@ -52,6 +68,15 @@ export default {
   computed: {
     names() {
       return this.sounds.map(s => s.file.match(/\/\w*\./g)[0].slice(1, -1));
+    },
+    qwerty() {
+      return this.sounds.slice(0, 10);
+    },
+    asdfg() {
+      return this.sounds.slice(10, 19);
+    },
+    zxcvb() {
+      return this.sounds.slice(19, 26);
     }
   },
   created() {
@@ -59,78 +84,65 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.container {
+.keyboard {
+  background: linear-gradient(135deg, #157199 0%, #101a99 100%);
+  background-size: cover;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #157199 0%, #101a99 100%);
-  background-size: cover;
-  height: 100vh;
-}
-
-.keys {
   width: 100vw;
-  display: grid;
-  grid-template-columns: repeat(10, 10%);
+  height: 100vh;
   overflow: hidden;
 }
 
+
+.keys {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .key {
-  margin: 0.1rem;
-  padding: 0.25rem;
-  border: 0.1rem solid black;
-  border-radius: 0.5rem;
+  cursor: pointer;
+  flex: 1;
+  width: 9vw;
+  height: 9vw;
+  margin: 0.25vw;
+  border: 0.2vw solid black;
+  border-radius: 5%;
   background: rgba(0, 0, 0, 0.4);
   text-shadow: 0 0 0.5rem black;
+  transition: 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: 0.2s ease;
 }
 
 kbd {
   color: #fff;
-  font-size: 2rem;
+  font-size: 5vw;
 }
 
 .sound {
-  font-size: 0.5rem;
+  display: none;
+  font-size: 1vw;
   color: #0094ff;
 }
 
 .playing {
   transform: scale(1.1);
-  border-color: #0094ff;
-  box-shadow: 0 0 0.1rem #0094ff;
+  border-color: #d65b34;
+  box-shadow: 0 0 0.75rem #d65b34;
 }
 
 
 @media(min-width: 1100px) {
-  .keys {
-    display: grid;
-    grid-template-columns: repeat(10, 10%);
-  }
-  .key {
-    margin: 0.5rem;
-    padding: 0.5rem;
-    border: 0.2rem solid black;
-  }
-  kbd {
-    font-size: 4rem;
-  }
   .sound {
-    font-size: 0.75rem;
-    color: #0094ff;
-  }
-  .playing {
-    transform: scale(1.1);
-    border-color: #0094ff;
-    box-shadow: 0 0 0.2rem #0094ff;
+    display: block;
   }
 }
 </style>
