@@ -73,15 +73,16 @@ export default {
 }
 
 .keys {
+  width: 100vw;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-auto-rows: 1fr;
+  grid-template-columns: repeat(10, 10%);
+  overflow: hidden;
 }
 
 .key {
-  margin: 0.5rem;
-  padding: 0.5rem;
-  border: 0.2rem solid black;
+  margin: 0.1rem;
+  padding: 0.25rem;
+  border: 0.1rem solid black;
   border-radius: 0.5rem;
   background: rgba(0, 0, 0, 0.4);
   text-shadow: 0 0 0.5rem black;
@@ -94,19 +95,42 @@ export default {
 
 kbd {
   color: #fff;
-  font-size: 4rem;
+  font-size: 2rem;
 }
 
 .sound {
   font-size: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
   color: #0094ff;
 }
 
 .playing {
   transform: scale(1.1);
   border-color: #0094ff;
-  box-shadow: 0 0 0.2rem #0094ff;
+  box-shadow: 0 0 0.1rem #0094ff;
+}
+
+
+@media(min-width: 1100px) {
+  .keys {
+    display: grid;
+    grid-template-columns: repeat(10, 10%);
+  }
+  .key {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border: 0.2rem solid black;
+  }
+  kbd {
+    font-size: 4rem;
+  }
+  .sound {
+    font-size: 0.75rem;
+    color: #0094ff;
+  }
+  .playing {
+    transform: scale(1.1);
+    border-color: #0094ff;
+    box-shadow: 0 0 0.2rem #0094ff;
+  }
 }
 </style>
